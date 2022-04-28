@@ -73,8 +73,8 @@ function preload(){
   bg2 = loadImage("fundo2.png");
 
   //Carrega a imagem da logo.
-  menuImg1 = loadImage("tela+inicial@2x.png");
-  menuImg2 = loadImage("telaincial2@2x.png");
+  menuImg1 = loadImage("telainicial.png");
+  menuImg2 = loadImage("telainicial2.png");
 
 }
 
