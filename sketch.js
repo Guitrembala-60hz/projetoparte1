@@ -2,20 +2,12 @@
 var canvas, gamestate, bg, bg2, menu, menu, menuImg1, menuImg2;
 
 
-//Variavel dos dinossauros, grupo dos dinossauros.
-var dinoHerb, dinoCarn, grupoHerb, grupoCarn;
-
-
-//Variavel para os sons.
-var tiroSom, dinoMorte, dinoCriado;
+//Variavel dos zombies, grupo dos zombies.
+var Human, Zombie, grupoHuman, grupoZombie;
 
 
 //Variavel do jogador, e uma imagem para cada direção do jogador.
 var cacador, playCima, playBaixo, playEsq, playDir;
-
-
-//Variavel para o helicoptero do player, grupo de helicopteros inimigos, imagem do helicoptero do player, e imagem do helicoptero inimigo.
-var helicoptero, helicopteroGrupo, heliPlayer, heliInim;
 
 
 //Variavel para os tiros do jogador, e grupo dos tiros.
@@ -26,8 +18,8 @@ var tiro, tiroGrupo;
 var placar = 0;
 
 
-//Variáveis para os dinossauros.
-var carnEsq, herbEsq, carnDir, herbDir, carnCima, herbCima, carnBaixo, herbBaixo;
+//Variáveis para os zombies.
+var ZombieEsq, HumanEsq, ZombieEsq, HumanDir, ZombieCima, HumanCima, ZombieBaixo, HumanBaixo;
 
 
 //Indica que a fase inicial é o menu.
@@ -36,29 +28,18 @@ gamestate = "menu";
 
 function preload(){
 
-  //Carrega imagens dos dinossauros carnivoros.
-  carnEsq = loadImage("Zesquerda.png");
-  carnDir = loadImage("Zdireita.png");
-  carnCima = loadImage("Zcima.png");
-  carnBaixo = loadImage("Zbaixo.png");
+  //Carrega imagens dos zombies.
+  ZombieEsq = loadImage("Zesquerda.png");
+  ZombieEsq = loadImage("Zdireita.png");
+  ZombieCima = loadImage("Zcima.png");
+  ZombieBaixo = loadImage("Zbaixo.png");
 
 
-  //Carrega imagens dos dinossauros herbivoros.
-  herbEsq = loadImage("hEsq.png");
-  herbDir = loadImage("hDir.png");
-  herbCima = loadImage("m.png");
-  herbBaixo = loadImage("mB.png");
-
-
-  //Carrega os sons.
-  dinoCriado = loadSound("criado.mp3");
-  dinoMorte = loadSound("morte.mp3");
-  tiroSom = loadSound("tiro.mp3");
-
-
-  //Carrega imagens dos helicópteros.
-  heliPlayer = loadImage("heliPlayer.png");
-  heliInim = loadImage("heliInim.png"); 
+  //Carrega imagens dos humanos.
+  Humanesq = loadImage("hEsq.png");
+  HumanDir = loadImage("hDir.png");
+  HumanCima = loadImage("m.png");
+  HumanBaixo = loadImage("mB.png");
 
 
   //Carrega imagem dos players.
@@ -92,10 +73,9 @@ function setup(){
 
 
 
-  //Cria o grupo dos helicopteros inimigos, dinossauros, e dos tiros.
-  helicopteroGrupo = new Group();
-  grupoCarn = new Group();
-  grupoHerb = new Group();
+  //Cria o grupo dos zombies, humanos e dos tiros.
+  grupoZombie = new Group();
+  grupoHuman = new Group();
   tiroGrupo = new Group();
 }
 
@@ -140,45 +120,38 @@ function draw(){
     if(keyDown(UP_ARROW)){
         atirar(0,-15);
       cacador.addImage(playCima);
-      tiroSom.play();
     }
 
     if(keyDown(LEFT_ARROW)){
       atirar(-15,0);
       cacador.addImage(playEsq);
-      tiroSom.play();
     }
 
     if(keyDown(DOWN_ARROW)){
       atirar(0,15);
       cacador.addImage(playBaixo);
-      tiroSom.play();
     }
 
     if(keyDown(RIGHT_ARROW)){
       atirar(15,0);
       cacador.addImage(playDir);
-      tiroSom.play();
     }
 
 
     if(frameCount%60 === 0){
-      criarDino(0,-5,5);
-      dinoCriado.play();
+      criar(0,-5,5);
     }
 
-    if(tiroGrupo.isTouching(grupoCarn)){
+    if(tiroGrupo.isTouching(grupoZombie)){
       placar = placar +1;
       tiroGrupo.destroyEach();
-      grupoCarn.destroyEach();
-      dinoMorte.play();
+      grupoZombie.destroyEach();
     }
   
-    if(tiroGrupo.isTouching(grupoHerb)){
+    if(tiroGrupo.isTouching(grupoHuman)){
       placar = placar -1;
       tiroGrupo.destroyEach();
-      grupoHerb.destroyEach();
-      dinoMorte.play();
+      grupoHuman.destroyEach();
     }
 
     if(placar === -2){
@@ -186,8 +159,8 @@ function draw(){
     }
 
     if(placar === 3){
-      grupoHerb.destroyEach();
-      grupoCarn.destroyEach();
+      grupoHuman.destroyEach();
+      grupoZombie.destroyEach();
       placar = 0;
       frameCount = 0;
       gamestate = "fase2";
@@ -214,45 +187,38 @@ function draw(){
     if(keyDown(UP_ARROW)){
         atirar(0,-15);
       cacador.addImage(playCima);
-      tiroSom.play();
     }
 
     if(keyDown(LEFT_ARROW)){
       atirar(-15,0);
       cacador.addImage(playEsq);
-      tiroSom.play();
     }
 
     if(keyDown(DOWN_ARROW)){
       atirar(0,15);
       cacador.addImage(playBaixo);
-      tiroSom.play();
     }
 
     if(keyDown(RIGHT_ARROW)){
       atirar(15,0);
       cacador.addImage(playDir);
-      tiroSom.play();
     }
 
 
     if(frameCount%40 === 0){
-      criarDino(0,-7,7);
-      dinoCriado.play();
+      criar(0,-7,7);
     }
 
-    if(tiroGrupo.isTouching(grupoCarn)){
+    if(tiroGrupo.isTouching(grupoZombie)){
       placar = placar +1;
       tiroGrupo.destroyEach();
-      grupoCarn.destroyEach();
-      dinoMorte.play();
+      grupoZombie.destroyEach();
     }
   
-    if(tiroGrupo.isTouching(grupoHerb)){
+    if(tiroGrupo.isTouching(grupoHuman)){
       placar = placar -1;
       tiroGrupo.destroyEach();
-      grupoHerb.destroyEach();
-      dinoMorte.play();
+      grupoHuman.destroyEach();
     }
 
     if(placar === -2){
@@ -260,8 +226,8 @@ function draw(){
     }
 
     if(placar === 3){
-      grupoHerb.destroyEach();
-      grupoCarn.destroyEach();
+      grupoHuman.destroyEach();
+      grupoZombie.destroyEach();
       frameCount = 0;
       gamestate = "fase3";
       placar = 0;
@@ -287,51 +253,44 @@ function draw(){
     if(keyDown(UP_ARROW)){
         atirar(0,-15);
       cacador.addImage(playCima);
-      tiroSom.play();
     }
 
     if(keyDown(LEFT_ARROW)){
       atirar(-15,0);
       cacador.addImage(playEsq);
-      tiroSom.play();
     }
 
     if(keyDown(DOWN_ARROW)){
       atirar(0,15);
       cacador.addImage(playBaixo);
-      tiroSom.play();
     }
 
     if(keyDown(RIGHT_ARROW)){
       atirar(15,0);
       cacador.addImage(playDir);
-      tiroSom.play();
     }
 
 
     if(frameCount%60 === 0){
-      criarDino(0,-9,9);
-      dinoCriado.play();
+      criar(0,-9,9);
     }
 
-    if(tiroGrupo.isTouching(grupoCarn)){
+    if(tiroGrupo.isTouching(grupoZombie)){
       placar = placar +1;
       tiroGrupo.destroyEach();
-      grupoCarn.destroyEach();
-      dinoMorte.play();
+      grupoZombie.destroyEach();
     }
   
-    //Se a bala tocar os dinossauros herbivoros
-    if(tiroGrupo.isTouching(grupoHerb)){
+    //Se a bala tocar os zombies Humanivoros
+    if(tiroGrupo.isTouching(grupoHuman)){
       //Aumenta o placar.
       placar = placar -1;
 
-      //Apaga os dinossauros herbivoros e tiros.
+      //Apaga os zombies Humanivoros e tiros.
       tiroGrupo.destroyEach();
-      grupoHerb.destroyEach();
+      grupoHuman.destroyEach();
 
-      //Toca o som da morte do dinossauro.
-      dinoMorte.play();
+      //Toca o som da morte do zombie.
     }
 
     //Se o placar for -2, você morre.
@@ -342,58 +301,16 @@ function draw(){
     //Se o placar for 6, você passa de fase.
     if(placar === 6){
 
-      //Apaga os dinossauros.
-      grupoHerb.destroyEach();
-      grupoCarn.destroyEach();
+      //Apaga os zombies.
+      grupoHuman.destroyEach();
+      grupoZombie.destroyEach();
 
       //Reseta o placar, frameCount e muda de fase.
-      placar = 0;
-      frameCount = 0;
-      gamestate = "fase4";
+     gamestate = "vitoria";
     }
 
   }
 
-
-
-  if(gamestate === "fase4"){
-
-    //Define o fundo de tela.
-    background(bg2);
-
-    //Desenha os sprites.
-    drawSprites();
-
-    //Adiciona imagem de helicoptero ao player e ajusta sua posição.
-    cacador.addImage(heliPlayer);
-    cacador.y = 700;
-
-    //Se clicar seta para esquerda, o helicoptero se move.
-    if(keyDown(LEFT_ARROW)){
-      cacador.x = cacador.x-9;
-    }
-
-    //Se clicar seta para direita, o helicoptero se move.
-    if(keyDown(RIGHT_ARROW)){
-      cacador.x = cacador.x+9;
-    }
-
-    //A cada 70 frames um helicoptero é criado.
-    if(frameCount%70 === 0){
-      criarHelicoptero();
-    }
-
-    //Se seu helicopter tocar um inimigo você perde.
-    if(cacador.isTouching(helicopteroGrupo)){
-      placar = -1;
-      gamestate = "morte";
-    }
-
-    //Se framecount for 1000, você ganha.
-    if(frameCount === 1000 && placar > -1){
-      gamestate = "vitoria";
-    }
-  }
 
   //O que acontece se você vencer está definido aqui.
   if(gamestate === "vitoria"){
@@ -428,196 +345,179 @@ function atirar(velX, velY){
 
 }
 
-    //Cria os dinossauros da fase 1.
-    function criarDino(a,b,c){
+    //Cria os zombies da fase 1.
+    function criar(a,b,c){
 
-      //Número aleatório que define qual dinossauro é criado, e sua direção.
+      //Número aleatório que define qual zombie é criado, e sua direção.
       var rand = Math.round(random(1,2));
       var rand2 = Math.round(random(1,4));
 
 
-      //Condicional : Se o número aleatório for 1, cria dinossauros carnivoros.
+      //Condicional : Se o número aleatório for 1, cria zombies.
       if(rand === 1){
     
-        //Cria sprite do dinossauro.
-        dinoCarn = createSprite(30,30,0,0);
-        dinoCarn.scale = 0.2;
+        //Cria sprite do zombie.
+        Zombie = createSprite(30,30,0,0);
+        Zombie.scale = 0.2;
 
-        //Adiciona ao grupo carnívoro o sprite.
-        grupoCarn.add(dinoCarn);
+        //Adiciona ao grupo Zombie o sprite.
+        grupoZombie.add(Zombie);
     
 
-        //Define a direção do dinossauro.
+        //Define a direção do zombie.
         switch(rand2){
     
-          //Dinossauro que vem de baixo.
+          //zombie que vem de baixo.
           case 1:
             //Quanto tempo o sprite fica na tela.
-            dinoCarn.lifetime = 100;
+            Zombie.lifetime = 100;
 
             //As posições do sprite.
-            dinoCarn.x = 850;
-            dinoCarn.y = 1800;
+            Zombie.x = 850;
+            Zombie.y = 1800;
 
             //As velocidades do sprite.
-            dinoCarn.velocityX = a;
-            dinoCarn.velocityY = b;
-            //Adiciona uma imagem ao dinossauro.
-            dinoCarn.addImage(carnBaixo);
+            Zombie.velocityX = a;
+            Zombie.velocityY = b;
+            //Adiciona uma imagem ao zombie.
+            Zombie.addImage(ZombieBaixo);
           break;
 
-          //Dinossauro que vem de cima.
+          //zombie que vem de cima.
           case 2:
             //Quanto tempo o sprite fica na tela.
-            dinoCarn.lifetime = 100;
+            Zombie.lifetime = 100;
 
             //As posições do sprite.
-            dinoCarn.x = 850;
-            dinoCarn.y = -100;
+            Zombie.x = 850;
+            Zombie.y = -100;
 
             //As velocidades do sprite.
-            dinoCarn.velocityX = a;
-            dinoCarn.velocityY = c;
+            Zombie.velocityX = a;
+            Zombie.velocityY = c;
 
-            //Adiciona uma imagem ao dinossauro.
-            dinoCarn.addImage(carnCima);
+            //Adiciona uma imagem ao zombie.
+            Zombie.addImage(ZombieCima);
           break;
 
-          //Dinossauro que vem da direita.
+          //zombie que vem da direita.
           case 3:
             //Quanto tempo o sprite fica na tela.
-            dinoCarn.lifetime = 200;
+            Zombie.lifetime = 200;
 
             //As posições do sprite.
-            dinoCarn.x = 1900;
-            dinoCarn.y = 425;
+            Zombie.x = 1900;
+            Zombie.y = 425;
 
             //As velocidades do sprite.
-            dinoCarn.velocityX = b;
-            dinoCarn.velocityY = a;
+            Zombie.velocityX = b;
+            Zombie.velocityY = a;
 
-            //Adiciona uma imagem ao dinossauro.
-            dinoCarn.addImage(carnDir);
+            //Adiciona uma imagem ao zombie.
+            Zombie.addImage(ZombieEsq);
           break;
 
-          //Dinossauro que vem da esquerda.
+          //zombie que vem da esquerda.
           case 4:
             //Quanto tempo o sprite fica na tela.
-            dinoCarn.lifetime = 200;
+            Zombie.lifetime = 200;
 
             //As posições do sprite.
-            dinoCarn.x = -100;
-            dinoCarn.y = 425;
+            Zombie.x = -100;
+            Zombie.y = 425;
 
             //As velocidades do sprite.
-            dinoCarn.velocityX = c;
-            dinoCarn.velocityY = a;
+            Zombie.velocityX = c;
+            Zombie.velocityY = a;
 
-            //Adiciona uma imagem ao dinossauro.
-            dinoCarn.addImage(carnEsq);
+            //Adiciona uma imagem ao zombie.
+            Zombie.addImage(ZombieEsq);
           break;
         }
       }
-      //Condicional: Se número aleatório for 2, crie dinossauros herbivoros.
+      //Condicional: Se número aleatório for 2, crie zombies.
       else if(rand === 2){
     
-        //Cria o sprite dos dinossauros herbivoros.
-        dinoHerb = createSprite(40,40,0,0);
-        dinoHerb.scale = 0.1;
+        //Cria o sprite dos humanos.
+        Human = createSprite(40,40,0,0);
+        Human.scale = 0.1;
 
-        //Adiciona os dinossauros herbivoros ao grupo de herbivoros.
-        grupoHerb.add(dinoHerb);
+        //Adiciona os humanos ao grupo de humanos.
+        grupoHuman.add(Human);
     
-        //Define a direção do dinossauro.
+        //Define a direção do humano.
         switch(rand2){
     
-          //Dinossauro que vem de baixo.
+          //humano que vem de baixo.
           case 1:
             //Quanto tempo o sprite fica na tela.
-            dinoHerb.lifetime = 100;
+            Human.lifetime = 100;
 
             //As posições do sprite.
-            dinoHerb.x = 850;
-            dinoHerb.y = 1800;
+            Human.x = 850;
+            Human.y = 1800;
 
             //As velocidades do sprite.
-            dinoHerb.velocityX = a;
-            dinoHerb.velocityY = b;
+            Human.velocityX = a;
+            Human.velocityY = b;
 
-            //Adiciona uma imagem ao dinossauro.
-            dinoHerb.addImage(herbBaixo);
+            //Adiciona uma imagem ao humano.
+            Human.addImage(HumanBaixo);
           break;
     
-          //Dinossauro que vem de cima.
+          //zombie que vem de cima.
           case 2:
             //Quanto tempo o sprite fica na tela.
-            dinoHerb.lifetime = 100;
+            Human.lifetime = 100;
 
             //As posições do sprite.
-            dinoHerb.x = 850;
-            dinoHerb.y = -100;
+            Human.x = 850;
+            Human.y = -100;
 
             //As velocidades do sprite.
-            dinoHerb.velocityX = a;
-            dinoHerb.velocityY = c;
+            Human.velocityX = a;
+            Human.velocityY = c;
 
-            //Adiciona uma imagem ao dinossauro.
-            dinoHerb.addImage(herbCima);
+            //Adiciona uma imagem ao humano.
+            Human.addImage(HumanCima);
           break;
           
-          //Dinossauro que vem da direita.
+          //zombie que vem da direita.
           case 3:
             //Quanto tempo o sprite fica na tela.
-            dinoHerb.lifetime = 200;
+            Human.lifetime = 200;
 
             //As posições do sprite.
-            dinoHerb.x = 1900;
-            dinoHerb.y = 425;
+            Human.x = 1900;
+            Human.y = 425;
 
             //As velocidades do sprite.
-            dinoHerb.velocityX = b;
-            dinoHerb.velocityY = a;
+            Human.velocityX = b;
+            Human.velocityY = a;
 
-            //Adiciona uma imagem ao dinossauro.
-            dinoHerb.addImage(herbDir);
+            //Adiciona uma imagem ao humano.
+            Human.addImage(HumanDir);
           break;
           
-          //Dinossauro que vem da esquerda.
+          //humano que vem da esquerda.
           case 4:
             //Quanto tempo o sprite fica na tela.
-            dinoHerb.lifetime = 200;
+            Human.lifetime = 200;
 
             //As posições do sprite.
-            dinoHerb.x = -100;
-            dinoHerb.y = 425;
+            Human.x = -100;
+            Human.y = 425;
 
             //As velocidades do sprite.
-            dinoHerb.velocityX = c;
-            dinoHerb.velocityY = a;
+            Human.velocityX = c;
+            Human.velocityY = a;
 
-            //Adiciona uma imagem ao dinossauro.
-            dinoHerb.addImage(herbEsq);
+            //Adiciona uma imagem ao humano.
+            Human.addImage(Humanesq);
           break;
         }
       }
       }
 
-  //Função que cria os helicopteros inimigos.
-  function criarHelicoptero(){
 
-  //Cria o sprite de helicoptero.
-  helicoptero = createSprite(0,-50,40,40);
-  
-  //Define uma posição aleatória.
-  helicoptero.x =  Math.round(random(100,1600));
-
-  //Define a velocidde.
-  helicoptero.velocityY = 5;
-
-  //Adiciona o sprite ao grupo.
-  helicopteroGrupo.add(helicoptero);
-
-  //Adiciona imagem ao sprite.
-  helicoptero.addImage(heliInim);
-  }
 
